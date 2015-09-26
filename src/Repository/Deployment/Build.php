@@ -17,6 +17,7 @@ class Build extends AbstractRepository
             'commit_author' => $oCommit->getAuthor(),
             'commit_message' => $oCommit->getMessage(),
             'nb_of_commands' => null,
+            'execute_log' => [],
         ];
 
         // Insert
@@ -54,13 +55,7 @@ class Build extends AbstractRepository
         // Get next build ready to be dispatched
         /** @var $oMapper \Asticode\DeploymentManager\Mapper\Deployment\Build */
         $oMapper = $this->oMapper;
-        $aResults = $oMapper->getNextBuildReadyToBeDispatched();
-
-        if (isset($aResults[0])) {
-            return $aResults[0];
-        } else {
-            return [];
-        }
+        return $oMapper->getNextBuildReadyToBeDispatched();
     }
 
     public function updateStateId(array $aBuild, $iBuildStateId)
@@ -81,6 +76,31 @@ class Build extends AbstractRepository
                 'id' => $aBuild['id'],
             ]);
         }
+
+        // Return
+        return $aBuild;
+    }
+
+    public function getNextBuildDispatched()
+    {
+        return $this->oMapper->fetchOne([
+            'build_state_id' => BuildState::DISPATCHED,
+        ], 'created_at ASC');
+    }
+
+    public function updateNumberOfCommands(array $aBuild, $iNumberOfCommands)
+    {
+        // Update build
+        $aBuild['nb_of_commands'] = $iNumberOfCommands;
+        $aBuild['build_state_id'] = BuildState::RUNNING;
+
+        // Execute
+        $this->oMapper->update([
+            'id' => $aBuild['id'],
+        ], [
+            'nb_of_commands' => $iNumberOfCommands,
+            'build_state_id' => BuildState::RUNNING,
+        ]);
 
         // Return
         return $aBuild;

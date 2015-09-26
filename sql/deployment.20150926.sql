@@ -8,8 +8,9 @@ CREATE TABLE `build` (
   `commit_author` VARCHAR(255) DEFAULT NULL,
   `commit_message` VARCHAR(255) DEFAULT NULL,
   `nb_of_commands` TINYINT(3) UNSIGNED DEFAULT NULL,
-  `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `execute_log` TEXT,
+  `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`),
   KEY(project),
   KEY(build_state_id)
@@ -25,7 +26,8 @@ CREATE TABLE `build_history` (
   `commit_author` VARCHAR(255) DEFAULT NULL,
   `commit_message` VARCHAR(255) DEFAULT NULL,
   `nb_of_commands` TINYINT(3) UNSIGNED DEFAULT NULL,
-  `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `execute_log` TEXT,
+  `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   KEY(build_id),
   KEY(project),
   KEY(build_state_id)

@@ -1,3 +1,5 @@
 .idea
 /vendor
-app/config/local.php
+/app/config/local.php
+/gits
+/tmp

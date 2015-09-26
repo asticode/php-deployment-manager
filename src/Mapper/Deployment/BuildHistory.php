@@ -13,5 +13,6 @@ class BuildHistory extends AbstractMapper
     {
         parent::__construct($oPdo);
         $this->set('entity', 'build_history');
+        $this->aJsonColumns = ['execute_log'];
     }
 }

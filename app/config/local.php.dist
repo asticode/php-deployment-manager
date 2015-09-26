@@ -1,6 +1,6 @@
 <?php
 
-use Asticode\DeploymentManager\Enum\Handler;
+use Asticode\DeploymentManager\Enum\BuildHandler;
 
 return [
 

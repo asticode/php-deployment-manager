@@ -4,7 +4,9 @@ namespace Asticode\DeploymentManager\Command\Build;
 use Asticode\DataMapper\DataMapper;
 use Asticode\DeploymentManager\Command\AbstractCommand;
 use Asticode\DeploymentManager\Enum\BuildState;
+use Asticode\DeploymentManager\Service\Build\BuildHandler;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,17 +15,19 @@ class ExecuteCommand extends AbstractCommand
 {
     // Attributes
     private $oDataMapper;
+    private $oBuildHandler;
 
     // Construct
     public function __construct(
         DataMapper $oDataMapper,
+        BuildHandler $oBuildHandler,
         LoggerInterface $oLogger,
         array $aConfig
     ) {
         // Parent construct
         parent::__construct(
             'build:execute',
-            'Get next DISPATCHED build',
+            'Get next DISPATCHED build, update its status to running, execute it and finish it',
             [
                 ['timeout', 't', InputOption::VALUE_OPTIONAL, 'Number of seconds script will run', 1],
             ],
@@ -33,6 +37,7 @@ class ExecuteCommand extends AbstractCommand
 
         // Initialize
         $this->oDataMapper = $oDataMapper;
+        $this->oBuildHandler = $oBuildHandler;
     }
 
     // Execute
@@ -51,46 +56,46 @@ class ExecuteCommand extends AbstractCommand
     // Specific execute
     protected function executeSpecific(InputInterface $oInput, OutputInterface $oOutput)
     {
-        // Merge project builds
-        $this->mergeProjectBuilds();
-
-        // Prepare build
-        $this->prepareNextBuild();
-    }
-
-    private function mergeProjectBuilds()
-    {
         // Get repositories
         /** @var $oDeploymentBuildRepository \Asticode\DeploymentManager\Repository\Deployment\Build */
         $oDeploymentBuildRepository = $this->oDataMapper->getRepository('Deployment\\Build');
         /** @var $oDeploymentBuildHistoryRepository \Asticode\DeploymentManager\Repository\Deployment\BuildHistory */
         $oDeploymentBuildHistoryRepository = $this->oDataMapper->getRepository('Deployment\\BuildHistory');
 
-        // Merge project builds
-        $aBuildsToBeMergedByProjects = $oDeploymentBuildRepository->getBuildsToBeMergedByProjects();
+        // Get next dispatched
+        $aBuild = $oDeploymentBuildRepository->getNextBuildDispatched();
 
-        // Loop through builds to be merged by projects
-        foreach ($aBuildsToBeMergedByProjects as $sProjectName => $aBuildsToBeMerged) {
-            // Split newest build
-            $aNewestBuild = array_shift($aBuildsToBeMerged);
+        // Build is valid
+        if ($aBuild !== []) {
+            // Project is valid
+            if (array_key_exists($aBuild['project'], $this->aConfig['projects'])) {
+                // Get project
+                $aProject = $this->aConfig['projects'][$aBuild['project']];
 
-            // Loop through builds to be merged
-            foreach ($aBuildsToBeMerged as $aBuildToBeMerged) {
-                // Udate build
-                $aBuildToBeMerged = $oDeploymentBuildRepository->updateStateId($aBuildToBeMerged, BuildState::MERGED);
-                $oDeploymentBuildHistoryRepository->create($aBuildToBeMerged);
+                // Get commands
+                $aCommands = $this->oBuildHandler->getCommands($aBuild, $aProject);
 
+                // Update job
+                $aBuild = $oDeploymentBuildRepository->updateNumberOfCommands($aBuild, count($aCommands));
+                $oDeploymentBuildHistoryRepository->create($aBuild);
+
+                // Build project
+                try {
+                    $this->oBuildHandler->build($aBuild, $aCommands);
+                } catch (RuntimeException $oException) {
+                    $this->updateBuildError($aBuild, $oException->getMessage());
+                }
+            } else {
                 // Log
-                $this->oLogger->info(sprintf(
-                    'Merged build #%s in build #%s',
-                    $aBuildToBeMerged['id'],
-                    $aNewestBuild['id']
+                $this->updateBuildError($aBuild, sprintf(
+                    'Invalid project name %s',
+                    $aBuild['project']
                 ));
             }
         }
     }
 
-    private function prepareNextBuild()
+    private function updateBuildError(array $aBuild, $sErrorMessage)
     {
         // Get repositories
         /** @var $oDeploymentBuildRepository \Asticode\DeploymentManager\Repository\Deployment\Build */
@@ -98,20 +103,12 @@ class ExecuteCommand extends AbstractCommand
         /** @var $oDeploymentBuildHistoryRepository \Asticode\DeploymentManager\Repository\Deployment\BuildHistory */
         $oDeploymentBuildHistoryRepository = $this->oDataMapper->getRepository('Deployment\\BuildHistory');
 
-        // Get next build ready to be dispatched
-        $aBuild = $oDeploymentBuildRepository->getNextBuildReadyToBeDispatched();
+        // Log
+        $this->oLogger->error($sErrorMessage);
 
-        // Build is valid
-        if ($aBuild !== []) {
-            // Update build
-            $aBuild = $oDeploymentBuildRepository->updateStateId($aBuild, BuildState::DISPATCHED);
-            $oDeploymentBuildHistoryRepository->create($aBuild);
-
-            // Log
-            $this->oLogger->info(sprintf(
-                'Dispatched build #%s',
-                $aBuild['id']
-            ));
-        }
+        // Update build
+        $aBuild['execute_log'][] = $sErrorMessage;
+        $aBuild = $oDeploymentBuildRepository->updateStateId($aBuild, BuildState::ERROR);
+        $oDeploymentBuildHistoryRepository->create($aBuild);
     }
 }

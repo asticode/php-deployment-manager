@@ -14,11 +14,12 @@ class Build extends AbstractMapper
     {
         parent::__construct($oPdo);
         $this->set('entity', 'build');
+        $this->aJsonColumns = ['execute_log'];
     }
 
     public function getBuildsToBeMerged()
     {
-        $oStmt = $this->getPdo()->prepare('
+        return $this->fetchAllQuery('
             SELECT *
             FROM build b
             WHERE b.project IN (
@@ -29,26 +30,22 @@ class Build extends AbstractMapper
                 HAVING COUNT(*) > 1
             )
             ORDER BY project ASC, created_at DESC
-        ');
-        $oStmt->execute([
-            ':build_state_id' => BuildState::QUEUED,
+        ', [
+            'build_state_id' => BuildState::QUEUED,
         ]);
-        return $oStmt->fetchAll();
     }
 
     public function getNextBuildReadyToBeDispatched()
     {
-        $oStmt = $this->getPdo()->prepare('
+        return $this->fetchOneQuery('
             SELECT *
             FROM build b
             WHERE b.created_at < DATE_SUB(NOW(), INTERVAL 1 MINUTE)
             AND build_state_id = :build_state_id
             ORDER BY created_at ASC
             LIMIT 1
-        ');
-        $oStmt->execute([
-            ':build_state_id' => BuildState::QUEUED,
+        ', [
+            'build_state_id' => BuildState::QUEUED,
         ]);
-        return $oStmt->fetchAll();
     }
 }

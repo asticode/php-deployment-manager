@@ -1,5 +1,20 @@
 <?php
+$sRootDir = __DIR__ . '/../..';
 return [
+
+    'build' => [
+        'bin' => [
+            'composer' => '',
+            'git' => '',
+            'php' => '',
+        ],
+        'dirs' => [
+            'backups' => sprintf('%s/backups', $sRootDir),
+            'gits' => sprintf('%s/gits', $sRootDir),
+            'root' => $sRootDir,
+            'tmp' => sprintf('%s/tmp', $sRootDir),
+        ],
+    ],
 
     'logger' => [
         'name' => 'replay-platform',
@@ -18,5 +33,7 @@ return [
         PDO::ATTR_EMULATE_PREPARES   => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8', sql_mode=TRADITIONAL, time_zone=\"+00:00\", wait_timeout=600"
     ],
+
+    'projects' => [],
 
 ];

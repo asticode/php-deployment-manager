@@ -1,9 +1,8 @@
 <?php
-namespace Asticode\DeploymentManager\Service;
+namespace Asticode\DeploymentManager\Service\Webhook;
 
 use Asticode\DataMapper\DataMapper;
 use Asticode\DeploymentManager\Entity\Webhook\Payload;
-use Asticode\Toolbox\ExtendedString;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 

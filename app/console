@@ -25,6 +25,12 @@ $aCommands = [
         $oLogger,
         $aConfig
     ),
+    new Command\Build\ExecuteCommand(
+        $oDataMapper,
+        $oBuildHandler,
+        $oLogger,
+        $aConfig
+    ),
 ];
 
 // Build application

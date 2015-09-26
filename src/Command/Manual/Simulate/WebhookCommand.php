@@ -2,7 +2,7 @@
 namespace Asticode\DeploymentManager\Command\Manual\Simulate;
 
 use Asticode\DeploymentManager\Command\AbstractCommand;
-use Asticode\DeploymentManager\Service\WebhookHandler;
+use Asticode\DeploymentManager\Service\Webhook\WebhookHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

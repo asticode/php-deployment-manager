@@ -1,7 +1,7 @@
 <?php
 namespace Asticode\DeploymentManager\Enum;
 
-class Handler
+class BuildHandler
 {
     const PHP = 'PHP';
 }

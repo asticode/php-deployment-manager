@@ -43,7 +43,15 @@ class InitCommand extends AbstractCommand
         $aSQLFiles = $this->oFileManager->explore(__DIR__ . '/../../../sql', OrderField::BASENAME);
         /** @var $oSQLFile \Asticode\FileManager\Entity\File */
         foreach ($aSQLFiles as $oSQLFile) {
-            $this->oDbConnectionLocator->getWrite('deployment')->exec($this->oFileManager->read($oSQLFile->getPath()));
+            // Split statements
+            $aStatements = explode(';', $this->oFileManager->read($oSQLFile->getPath()));
+
+            // Loop through statements
+            foreach ($aStatements as $sStatement) {
+                if ($sStatement !== '') {
+                    $this->oDbConnectionLocator->getWrite('deployment')->exec($sStatement);
+                }
+            }
         }
 
         // Log

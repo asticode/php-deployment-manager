@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-data-mapper.git",
-                "reference": "5120bfe7b86118c870cebc596a8580c787541462"
+                "reference": "27919bb5b1e15cdd41ed338ffb2e1b5a517567d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-data-mapper/zipball/5120bfe7b86118c870cebc596a8580c787541462",
-                "reference": "5120bfe7b86118c870cebc596a8580c787541462",
+                "url": "https://api.github.com/repos/asticode/php-data-mapper/zipball/27919bb5b1e15cdd41ed338ffb2e1b5a517567d7",
+                "reference": "27919bb5b1e15cdd41ed338ffb2e1b5a517567d7",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "mapper",
                 "php"
             ],
-            "time": "2015-09-26 13:34:32"
+            "time": "2015-09-26 15:54:42"
         },
         {
             "name": "asticode/php-file-manager",
