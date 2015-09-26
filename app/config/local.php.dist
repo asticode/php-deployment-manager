@@ -1,4 +1,7 @@
 <?php
+
+use Asticode\DeploymentManager\Enum\Handler;
+
 return [
 
     'logger' => [
@@ -19,6 +22,10 @@ return [
         'read' => [
 
         ],
+    ],
+
+    'projects' => [
+
     ],
 
 ];

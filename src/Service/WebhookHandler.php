@@ -99,11 +99,7 @@ class WebhookHandler
         /** @var $oCommit \Asticode\DeploymentManager\Entity\Webhook\Commit */
         foreach ($oPayload->getCommits() as $oCommit) {
             // Initialize
-            $sProjectName = sprintf(
-                '%s:%s',
-                $oPayload->getRepository()->getName(),
-                $oCommit->getBranch()
-            );
+            $sProjectName = $oPayload->getProjectName($oCommit);
 
             // Project exists
             if (array_key_exists($sProjectName, $this->aConfig['projects'])) {

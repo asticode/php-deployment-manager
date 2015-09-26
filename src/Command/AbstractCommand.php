@@ -50,7 +50,7 @@ abstract class AbstractCommand extends Command
     protected function executeAndLoopCommand(InputInterface $oInput, OutputInterface $oOutput, array $aClosure)
     {
         // Initialize
-        $iStartTime = time();
+        $iStartTime = microtime(true);
         $bTerminate = false;
         declare(ticks = 1);
         pcntl_signal(SIGTERM, function () use (&$bTerminate) {
@@ -70,7 +70,7 @@ abstract class AbstractCommand extends Command
             sleep(1);
 
             // Update terminate
-            $bTerminate = $oInput->getOption('timeout') < (time() - $iStartTime);
+            $bTerminate = $oInput->getOption('timeout') < (microtime(true) - $iStartTime);
         } while (!$bTerminate);
     }
 }

@@ -20,6 +20,11 @@ $aCommands = [
         $oLogger,
         $aConfig
     ),
+    new Command\Build\DispatchCommand(
+        $oDataMapper,
+        $oLogger,
+        $aConfig
+    ),
 ];
 
 // Build application

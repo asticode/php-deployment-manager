@@ -34,4 +34,13 @@ class Payload
     {
         return $this->aCommits;
     }
+
+    public function getProjectName(Commit $oCommit)
+    {
+        return sprintf(
+            '%s:%s',
+            $this->oRepository->getName(),
+            $oCommit->getBranch()
+        );;
+    }
 }
