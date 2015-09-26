@@ -1,0 +1,24 @@
+<?php
+return [
+
+    'logger' => [
+        'syslog' => [
+            'ident' => 'LOGGER_SYSLOG_IDENT',
+        ]
+    ],
+
+    'datasources' => [
+        'write' => [
+            'deployment' => [
+                'hostname' => 'DATASOURCES_WRITE_DEPLOYMENT_HOST',
+                'database' => 'DATASOURCES_WRITE_DEPLOYMENT_DATABASE',
+                'username' => 'DATASOURCES_WRITE_DEPLOYMENT_USERNAME',
+                'password' => 'DATASOURCES_WRITE_DEPLOYMENT_PASSWORD',
+            ],
+        ],
+        'read' => [
+
+        ],
+    ],
+
+];

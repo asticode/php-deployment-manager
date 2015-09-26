@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Asticode\DeploymentManager\Command;
+
+// Include bootstrap
+require_once __DIR__ . '/../src/bootstrap.php';
+
+// Get commands
+$aCommands = [
+    new Command\Manual\InitCommand(
+        $oFileManager,
+        $oDbConnectionLocator,
+        $oLogger,
+        $aConfig
+    ),
+    new Command\Manual\Simulate\WebhookCommand(
+        $oWebhookHandler,
+        $oLogger,
+        $aConfig
+    ),
+];
+
+// Build application
+$oApp = new Application();
+$oApp->addCommands($aCommands);
+$oApp->run($oInput);

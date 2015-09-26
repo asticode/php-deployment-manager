@@ -1,7 +1,7 @@
 {
   "name": "asticode/php-deployment-manager",
   "type": "library",
-  "description": "",
+  "description": "Deployment manager to enable automatic deployment of PHP or GO projects on your server after a GIT push",
   "keywords": [
     "php",
     "deployment",
@@ -18,7 +18,14 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.3.0",
+    "ext-pdo_mysql": "*",
+    "symfony/console": "^2.7",
+    "monolog/monolog": "1.*",
+    "aura/sql": "~2.4.0",
+    "asticode/php-toolbox": "dev-master",
+    "asticode/php-file-manager": "dev-master",
+    "asticode/php-data-mapper": "dev-master"
   },
   "autoload": {
     "psr-4": {
