@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-file-manager.git",
-                "reference": "3d7544b61259755148713e988ceb0937b93ca15c"
+                "reference": "42a67239f984cf38c45430ccaad99d86a4622a81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-file-manager/zipball/3d7544b61259755148713e988ceb0937b93ca15c",
-                "reference": "3d7544b61259755148713e988ceb0937b93ca15c",
+                "url": "https://api.github.com/repos/asticode/php-file-manager/zipball/42a67239f984cf38c45430ccaad99d86a4622a81",
+                "reference": "42a67239f984cf38c45430ccaad99d86a4622a81",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "php",
                 "unix"
             ],
-            "time": "2015-09-27 12:50:16"
+            "time": "2015-09-27 14:56:12"
         },
         {
             "name": "asticode/php-toolbox",
@@ -105,12 +105,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-toolbox.git",
-                "reference": "bcc8ff93f77e5abbe437cad86cb6c81472dcd3d2"
+                "reference": "5041d64b7e92292626493303b626c7293433a9b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/bcc8ff93f77e5abbe437cad86cb6c81472dcd3d2",
-                "reference": "bcc8ff93f77e5abbe437cad86cb6c81472dcd3d2",
+                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/5041d64b7e92292626493303b626c7293433a9b8",
+                "reference": "5041d64b7e92292626493303b626c7293433a9b8",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
                 "shell",
                 "string"
             ],
-            "time": "2015-09-27 12:53:51"
+            "time": "2015-09-27 15:36:25"
         },
         {
             "name": "aura/sql",

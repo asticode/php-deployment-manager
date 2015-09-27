@@ -81,22 +81,19 @@ class BuildHandler
             );
             $this->buildExecuteLog($aBuild, $sLogMessage);
 
-            // PHP
             if ($oCommand->getDatasource() === CommandDatasource::PHP) {
+                // Log
                 $this->buildExecuteLog($aBuild, call_user_func($oCommand->getContent()));
             } else {
                 // Log
                 $this->buildExecuteLog($aBuild, $oCommand->getContent());
 
                 // Execute
-                list ($aStdOut, $aStdErr, $iExitStatus) = ExtendedShell::exec(
-                    $oCommand->getContent(),
-                    $oCommand->getTimeout(),
-                    false
-                );
+                $aOutput = [];
+                $iExitStatus = ExtendedShell::exec($oCommand->getContent(), $aOutput, $oCommand->getTimeout(), false);
 
                 // Log
-                $this->buildExecuteLog($aBuild, array_merge($aStdOut, $aStdErr));
+                $this->buildExecuteLog($aBuild, $aOutput);
 
                 // Error
                 if ($iExitStatus !== 0) {

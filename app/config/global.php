@@ -14,6 +14,7 @@ return [
             'root' => $sRootDir,
             'tmp' => sprintf('%s/tmp', $sRootDir),
         ],
+        'number_of_backups_per_project' => 1,
     ],
 
     'logger' => [

@@ -3,8 +3,11 @@ namespace Asticode\DeploymentManager\Service\Build\Handler;
 
 use Asticode\DeploymentManager\Entity\Handler\Command;
 use Asticode\DeploymentManager\Enum\CommandDatasource;
+use Asticode\FileManager\Enum\OrderDirection;
+use Asticode\FileManager\Enum\OrderField;
 use Asticode\FileManager\Enum\WriteMethod;
 use Asticode\Toolbox\ExtendedString;
+use DateTime;
 
 class PHPHandler extends AbstractHandler
 {
@@ -13,6 +16,7 @@ class PHPHandler extends AbstractHandler
     {
         // Initialize
         $aCommands = [];
+        $oNow = new DateTime();
 
         // Parse project name
         list($sRepositoryName, $sBranchName) = $this->parseProjectName($aBuild['project']);
@@ -129,6 +133,136 @@ class PHPHandler extends AbstractHandler
 
                 // Return
                 return $aOutputs;
+            }
+        );
+
+        // Composer install
+        $aCommands[] = new Command(
+            'Composer install',
+            CommandDatasource::SHELL,
+            sprintf(
+                'cd %s && COMPOSER_HOME="%s" %s %s install --prefer-dist',
+                $sTempDirPath,
+                dirname($this->aConfig['bin']['composer']),
+                $this->aConfig['bin']['php'],
+                $this->aConfig['bin']['composer']
+            )
+        );
+
+        // Backup project directory
+        $sBackupDirPath = sprintf(
+            '%s/%s/%s',
+            $this->aConfig['dirs']['backups'],
+            $sRepositoryName,
+            $sBranchName
+        );
+        $aCommands[] = new Command(
+            sprintf('Backup source directory'),
+            CommandDatasource::PHP,
+            function () use ($sBackupDirPath, $aProjectConfig, $oNow) {
+                // Initialize
+                $aOutput = [];
+
+                // Source folder exists
+                if ($this->oFileManager->exists($aProjectConfig['source_dir'])) {
+                    // Create backups folder
+                    if (!$this->oFileManager->exists($sBackupDirPath)) {
+                        // Create dir
+                        $this->oFileManager->createDir($sBackupDirPath);
+
+                        // Output
+                        $aOutput[] = sprintf(
+                            'Created directory %s',
+                            $sBackupDirPath
+                        );
+                    }
+
+                    // Remove old backups
+                    if ($this->aConfig['number_of_backups_per_project'] > 0) {
+                        // Get dirs
+                        $aDirs = $this->oFileManager->explore(
+                            $sBackupDirPath,
+                            OrderField::BASENAME,
+                            OrderDirection::DESC
+                        );
+
+                        // Dirs have to be removed
+                        if (count($aDirs) > 0) {
+                            do {
+                                // Get last dir
+                                /** @var $oDirToBeRemoved \Asticode\FileManager\Entity\File */
+                                $oDirToBeRemoved = array_pop($aDirs);
+
+                                // Delete
+                                $this->oFileManager->delete($oDirToBeRemoved->getPath());
+
+                                // Output
+                                $aOutput[] = sprintf(
+                                    'Deleted directory %s',
+                                    $oDirToBeRemoved->getPath()
+                                );
+                            } while (count($aDirs) > $this->aConfig['number_of_backups_per_project']);
+                        }
+                    }
+
+                    // Backup current project
+                    $sBackupDirPath =sprintf(
+                        '%s/%s',
+                        $sBackupDirPath,
+                        $oNow->format('YmdHis')
+                    );
+                    $this->oFileManager->copy($aProjectConfig['source_dir'], $sBackupDirPath);
+
+                    // Output
+                    $aOutput[] = sprintf(
+                        'Copied %s to %s',
+                        $aProjectConfig['source_dir'],
+                        $sBackupDirPath
+                    );
+                } else {
+                    $aOutput[] = sprintf(
+                        'Path %s doesn\'t exist, nothing to back up',
+                        $aProjectConfig['source_dir']
+                    );
+                }
+
+                // Return
+                return $aOutput;
+            }
+        );
+
+        // Move temp directory
+        $aCommands[] = new Command(
+            sprintf('Move temp directory'),
+            CommandDatasource::PHP,
+            function () use ($sTempDirPath, $aProjectConfig) {
+                // Initialize
+                $aOutput = [];
+
+                // Delete source dir
+                if($this->oFileManager->exists($aProjectConfig['source_dir'])) {
+                    // Delete
+                    $this->oFileManager->delete($aProjectConfig['source_dir']);
+
+                    // Output
+                    $aOutput[] = sprintf(
+                        'Deleted %s',
+                        $aProjectConfig['source_dir']
+                    );
+                }
+
+                // Move temp dir
+                $this->oFileManager->move($sTempDirPath, $aProjectConfig['source_dir']);
+
+                // Output
+                $aOutput[] = sprintf(
+                    'Moved %s to %s',
+                    $sTempDirPath,
+                    $aProjectConfig['source_dir']
+                );
+
+                // Return
+                return $aOutput;
             }
         );
 

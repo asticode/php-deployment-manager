@@ -75,14 +75,19 @@ class ExecuteCommand extends AbstractCommand
                 // Get commands
                 $aCommands = $this->oBuildHandler->getCommands($aBuild, $aProject);
 
-                // Update job
+                // Update build
                 $aBuild = $oDeploymentBuildRepository->updateNumberOfCommands($aBuild, count($aCommands));
                 $oDeploymentBuildHistoryRepository->create($aBuild);
 
-                // Build project
                 try {
+                    // Build project
                     $this->oBuildHandler->build($aBuild, $aCommands);
+
+                    // Update build
+                    $aBuild = $oDeploymentBuildRepository->updateStateId($aBuild, BuildState::DONE);
+                    $oDeploymentBuildHistoryRepository->create($aBuild);
                 } catch (RuntimeException $oException) {
+                    // Error
                     $this->updateBuildError($aBuild, $oException->getMessage());
                 }
             } else {
