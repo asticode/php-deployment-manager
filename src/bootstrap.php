@@ -103,16 +103,19 @@ $oDataMapper = new DataMapper(
     'Asticode\\DeploymentManager'
 );
 
-// Build build handler
+// Build services
+$oWebhookHandler = new Service\Webhook\WebhookHandler(
+    $oDataMapper,
+    $oLogger,
+    $aConfig
+);
 $oBuildHandler = new Service\Build\BuildHandler(
     $oDataMapper,
     $oFileManager,
     $oLogger,
     $aConfig['build']
 );
-
-// Build services
-$oWebhookHandler = new Service\Webhook\WebhookHandler(
+$oDisplayHandler = new Service\Display\DisplayHandler(
     $oDataMapper,
     $oLogger,
     $aConfig
