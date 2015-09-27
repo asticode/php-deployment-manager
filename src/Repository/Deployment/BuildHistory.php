@@ -25,4 +25,12 @@ class BuildHistory extends AbstractRepository
         // Return
         return $aBuildHistory;
     }
+
+    public function getLastBuildHistoryByProject()
+    {
+        // Get last by project
+        /** @var $oMapper \Asticode\DeploymentManager\Mapper\Deployment\BuildHistory */
+        $oMapper = $this->oMapper;
+        return $oMapper->getLastBuildHistoryByProject();
+    }
 }

@@ -23,9 +23,14 @@ class DisplayHandler
         $this->aConfig = $aConfig;
     }
 
-    public function handle()
+    public function getLastBuildHistoryByProject()
     {
-        echo 'caca';
+        // Get repository
+        /** @var $oDeploymentBuildHistoryRepository \Asticode\DeploymentManager\Repository\Deployment\BuildHistory */
+        $oDeploymentBuildHistoryRepository = $this->oDataMapper->getRepository('Deployment\\BuildHistory');
+
+        // Return
+        return json_encode($oDeploymentBuildHistoryRepository->getLastBuildHistoryByProject());
     }
 
 }
