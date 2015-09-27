@@ -83,9 +83,10 @@ class DispatchCommand extends AbstractCommand
 
                 // Log
                 $this->oLogger->info(sprintf(
-                    'Merged build #%s in build #%s',
+                    'Merged build #%s in build #%s for project %s',
                     $aBuildToBeMerged['id'],
-                    $aNewestBuild['id']
+                    $aNewestBuild['id'],
+                    $sProjectName
                 ));
             }
         }

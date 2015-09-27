@@ -3,6 +3,8 @@ namespace Asticode\DeploymentManager\Service\Build\Handler;
 
 use Asticode\DeploymentManager\Entity\Handler\Command;
 use Asticode\DeploymentManager\Enum\CommandDatasource;
+use Asticode\FileManager\Enum\WriteMethod;
+use Asticode\Toolbox\ExtendedString;
 
 class PHPHandler extends AbstractHandler
 {
@@ -67,8 +69,67 @@ class PHPHandler extends AbstractHandler
                 $sGitDirPath,
                 $sGitDirPath,
                 $sBranchName
-            ),
-            ['/^Already on /']
+            )
+        );
+
+        // Git reset in tmp dir
+        $aCommands[] = new Command(
+            'Git reset in tmp dir',
+            CommandDatasource::SHELL,
+            sprintf(
+                '%s --git-dir="%s" --work-tree="%s" reset --hard',
+                $this->aConfig['bin']['git'],
+                $sGitDirPath,
+                $sTempDirPath
+            )
+        );
+
+        // Replace
+        $aCommands[] = new Command(
+            'Replace',
+            CommandDatasource::PHP,
+            function () use ($sTempDirPath, $aProjectConfig) {
+                // Initialize
+                $aOutputs = [];
+
+                // Loop through files to replace
+                foreach ($aProjectConfig['replace'] as $sFilePath => $aStringsToReplace) {
+                    // Update filepath
+                    $sFilePath = sprintf('%s%s', $sTempDirPath, $sFilePath);
+
+                    // File exists
+                    if ($this->oFileManager->exists($sFilePath)) {
+                        // Get content
+                        $sContent = $this->oFileManager->read($sFilePath);
+
+                        // Loop through strings to replace
+                        foreach ($aStringsToReplace as $sStringToReplace => $sReplacement) {
+                            $sContent = preg_replace(sprintf(
+                                '/%s/',
+                                ExtendedString::pregQuote($sStringToReplace)
+                            ), $sReplacement, $sContent);
+                        }
+
+                        // Overwrite
+                        $this->oFileManager->write($sContent, $sFilePath, WriteMethod::OVERWRITE);
+
+                        // Add output
+                        $aOutputs[] = sprintf(
+                            'Replaced values in path %s',
+                            $sFilePath
+                        );
+                    } else {
+                        // Add output
+                        $aOutputs[] = sprintf(
+                            'Path %s is invalid',
+                            $sFilePath
+                        );
+                    }
+                }
+
+                // Return
+                return $aOutputs;
+            }
         );
 
         // Return

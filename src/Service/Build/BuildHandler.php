@@ -89,38 +89,24 @@ class BuildHandler
                 $this->buildExecuteLog($aBuild, $oCommand->getContent());
 
                 // Execute
-                list ($sOutputContent, $sErrorContent) = ExtendedShell::exec(
+                list ($aStdOut, $aStdErr, $iExitStatus) = ExtendedShell::exec(
                     $oCommand->getContent(),
-                    $oCommand->getTimeout()
+                    $oCommand->getTimeout(),
+                    false
                 );
 
-                // Log output
-                $this->buildExecuteLog($aBuild, explode("\n", $sOutputContent));
+                // Log
+                $this->buildExecuteLog($aBuild, array_merge($aStdOut, $aStdErr));
 
-                // Catch error
-                if ($sErrorContent !== '') {
-                    // Ignore error patterns
-                    $bThrowException = true;
-                    if ($oCommand->getIgnoreErrorPatterns() !== []) {
-                        // Loop through patterns
-                        foreach ($oCommand->getIgnoreErrorPatterns() as $sPattern) {
-                            if (preg_match($sPattern, $sErrorContent) > 0) {
-                                // Log output
-                                $this->buildExecuteLog($aBuild, explode("\n", $sErrorContent));
-
-                                $bThrowException = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    // Throw exception
-                    if ($bThrowException) {
-                        throw new RuntimeException($sErrorContent);
-                    }
+                // Error
+                if ($iExitStatus !== 0) {
+                    throw new RuntimeException(sprintf(
+                        'Invalid exit status %s',
+                        $iExitStatus
+                    ));
                 }
             }
-        }die;
+        }
     }
 
     private function buildExecuteLog(array &$aBuild, $aLogMessages)

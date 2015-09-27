@@ -7,17 +7,15 @@ class Command
     private $sLabel;
     private $iDatasource;
     private $fContent;
-    private $aIgnoreErrorPatterns;
     private $iTimeout;
 
     // Construct
-    public function __construct($sLabel, $iDatasource, $fContent, array $aIgnoreErrorPatterns = [], $iTimeout = 0)
+    public function __construct($sLabel, $iDatasource, $fContent, $iTimeout = 0)
     {
         // Initialize
         $this->sLabel = $sLabel;
         $this->iDatasource = $iDatasource;
         $this->fContent = $fContent;
-        $this->aIgnoreErrorPatterns = $aIgnoreErrorPatterns;
         $this->iTimeout = $iTimeout;
     }
 
@@ -34,11 +32,6 @@ class Command
     public function getContent()
     {
         return $this->fContent;
-    }
-
-    public function getIgnoreErrorPatterns()
-    {
-        return $this->aIgnoreErrorPatterns;
     }
 
     public function getTimeout()

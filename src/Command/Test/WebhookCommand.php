@@ -1,5 +1,5 @@
 <?php
-namespace Asticode\DeploymentManager\Command\Manual\Simulate;
+namespace Asticode\DeploymentManager\Command\Test;
 
 use Asticode\DeploymentManager\Command\AbstractCommand;
 use Asticode\DeploymentManager\Service\Webhook\WebhookHandler;
@@ -20,8 +20,8 @@ class WebhookCommand extends AbstractCommand
     ) {
         // Parent construct
         parent::__construct(
-            'manual:simulate:webhook',
-            'Simulate a webhook',
+            'test:webhook',
+            'Test the webhook',
             [],
             $oLogger,
             $aConfig

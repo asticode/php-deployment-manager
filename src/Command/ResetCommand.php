@@ -1,7 +1,6 @@
 <?php
-namespace Asticode\DeploymentManager\Command\Manual;
+namespace Asticode\DeploymentManager\Command;
 
-use Asticode\DeploymentManager\Command\AbstractCommand;
 use Asticode\FileManager\Enum\OrderField;
 use Asticode\FileManager\FileManager;
 use Aura\Sql\ConnectionLocatorInterface;
@@ -9,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InitCommand extends AbstractCommand
+class ResetCommand extends AbstractCommand
 {
     // Attributes
     private $oFileManager;
@@ -24,8 +23,8 @@ class InitCommand extends AbstractCommand
     ) {
         // Parent construct
         parent::__construct(
-            'manual:init',
-            'Initialize the project',
+            'reset',
+            'Reset the deployment manager',
             [],
             $oLogger,
             $aConfig
@@ -40,7 +39,7 @@ class InitCommand extends AbstractCommand
     protected function execute(InputInterface $oInput, OutputInterface $oOutput)
     {
         // Execute SQL
-        $aSQLFiles = $this->oFileManager->explore(__DIR__ . '/../../../sql', OrderField::BASENAME);
+        $aSQLFiles = $this->oFileManager->explore(__DIR__ . '/../../sql', OrderField::BASENAME);
         /** @var $oSQLFile \Asticode\FileManager\Entity\File */
         foreach ($aSQLFiles as $oSQLFile) {
             // Split statements
@@ -55,6 +54,6 @@ class InitCommand extends AbstractCommand
         }
 
         // Log
-        $this->oLogger->info('The project has been initialized successfully');
+        $this->oLogger->info('The project has been reset successfully');
     }
 }
