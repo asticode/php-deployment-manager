@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "397288924164bd7feb906154e69c9288",
+    "hash": "baa81599ae614179094c6e7657742ebc",
     "packages": [
         {
             "name": "asticode/php-data-mapper",

@@ -31,5 +31,10 @@
     "psr-4": {
       "Asticode\\DeploymentManager\\": "src/"
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "Asticode\\DeploymentManager\\Service\\Install\\Install::postInstall"
+    ]
   }
 }

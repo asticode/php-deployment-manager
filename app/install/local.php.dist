@@ -1,0 +1,28 @@
+<?php
+return [
+
+    'build' => [
+        'bin' => [
+            'composer' => '%BIN_COMPOSER%',
+            'git' => '%BIN_GIT%',
+            'php' => '%BIN_PHP%',
+        ],
+    ],
+
+    'datasources' => [
+        'write' => [
+            'deployment' => [
+                'hostname' => '%DATASOURCE_HOSTNAME%',
+                'database' => '%DATASOURCE_DATABASE%',
+                'username' => '%DATASOURCE_USERNAME%',
+                'password' => '%DATASOURCE_PASSWORD%',
+            ],
+        ],
+        'read' => [
+
+        ],
+    ],
+
+    'projects' => [],
+
+];

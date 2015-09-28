@@ -9,13 +9,13 @@ require_once __DIR__ . '/../src/bootstrap.php';
 
 // Get commands
 $aCommands = [
-    new Command\ResetCommand(
+    new Command\Manager\InstallCommand(
         $oFileManager,
         $oDbConnectionLocator,
         $oLogger,
         $aConfig
     ),
-    new Command\CheckCommand(
+    new Command\Manager\CheckCommand(
         $oLogger,
         $aConfig
     ),

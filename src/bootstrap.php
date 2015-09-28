@@ -115,8 +115,3 @@ $oBuildHandler = new Service\Build\BuildHandler(
     $oLogger,
     $aConfig['build']
 );
-$oDisplayHandler = new Service\Display\DisplayHandler(
-    $oDataMapper,
-    $oLogger,
-    $aConfig
-);

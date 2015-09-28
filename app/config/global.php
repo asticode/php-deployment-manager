@@ -22,6 +22,7 @@ return [
         'line_format' => "\033[1;30m%datetime%, %level_name%:\033[0m %message% %context% %extra%\n",
         'date_format' => 'H:i:s',
         'syslog' => [
+            'ident' => 'deployment-manager',
             'facility' => LOG_USER,
             'level'    => LOG_INFO
         ],

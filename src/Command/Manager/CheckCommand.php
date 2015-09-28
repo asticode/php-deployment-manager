@@ -1,6 +1,7 @@
 <?php
-namespace Asticode\DeploymentManager\Command;
+namespace Asticode\DeploymentManager\Command\Manager;
 
+use Asticode\DeploymentManager\Command\AbstractCommand;
 use Asticode\Toolbox\ExtendedShell;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +16,7 @@ class CheckCommand extends AbstractCommand
     ) {
         // Parent construct
         parent::__construct(
-            'check',
+            'manager:check',
             'Sanity check of the deployment manager',
             [],
             $oLogger,
