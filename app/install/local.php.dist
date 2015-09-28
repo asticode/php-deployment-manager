@@ -3,10 +3,11 @@ return [
 
     'build' => [
         'bin' => [
-            'composer' => '%BIN_COMPOSER%',
-            'git' => '%BIN_GIT%',
-            'php' => '%BIN_PHP%',
+            'composer' => '%BUILD_BIN_COMPOSER%',
+            'git' => '%BUILD_BIN_GIT%',
+            'php' => '%BUILD_BIN_PHP%',
         ],
+        'nb_backups_per_projects' => '%BUILD_NB_BACKUPS_PER_PROJECTS%',
     ],
 
     'datasources' => [

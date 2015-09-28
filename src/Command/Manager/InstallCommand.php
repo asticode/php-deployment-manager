@@ -94,6 +94,10 @@ class InstallCommand extends AbstractCommand
                 // Output
                 $oOutput->write(": OK\n");
 
+                // TODO Create dirs
+                // TODO ask for binaries
+                // TODO ask for nb of backups per projects
+
                 // Output
                 $oOutput->writeln("\nThe project has been installed successfully.\n");
             } else {

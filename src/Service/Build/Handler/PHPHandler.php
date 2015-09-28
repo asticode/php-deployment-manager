@@ -88,6 +88,8 @@ class PHPHandler extends AbstractHandler
             )
         );
 
+        // TODO copy dist files => conf = array[path to dist] => new path without extension dist
+
         // Replace
         $aCommands[] = new Command(
             'Replace',
@@ -178,7 +180,7 @@ class PHPHandler extends AbstractHandler
                     }
 
                     // Remove old backups
-                    if ($this->aConfig['number_of_backups_per_project'] > 0) {
+                    if ($this->aConfig['nb_backups_per_projects'] > 0) {
                         // Get dirs
                         $aDirs = $this->oFileManager->explore(
                             $sBackupDirPath,
@@ -201,7 +203,7 @@ class PHPHandler extends AbstractHandler
                                     'Deleted directory %s',
                                     $oDirToBeRemoved->getPath()
                                 );
-                            } while (count($aDirs) > $this->aConfig['number_of_backups_per_project']);
+                            } while (count($aDirs) > $this->aConfig['nb_backups_per_projects']);
                         }
                     }
 

@@ -21,14 +21,14 @@ class Install
             "read/write privileges on it. Once you have it please fill in the information below :\n");
 
         // Get database information
-        self::askAndReplace($oInputOutput, 'database host (e.g. "localhost"): ', '', '%DATASOURCE_HOSTNAME%', true);
-        self::askAndReplace($oInputOutput, 'database name (e.g. "deployment"): ', '', '%DATASOURCE_DATABASE%', true);
+        self::askAndReplace($oInputOutput, 'database host [localhost]: ', 'localhost', '%DATASOURCE_HOSTNAME%', true);
+        self::askAndReplace($oInputOutput, 'database name [deployment]: ', 'deployment', '%DATASOURCE_DATABASE%', true);
         self::askAndReplace($oInputOutput, 'database username: ', '', '%DATASOURCE_USERNAME%', true);
         self::askAndReplace($oInputOutput, 'database password: ', '', '%DATASOURCE_PASSWORD%', true);
 
         // Conclude
-        $oInputOutput->write("\nRun 'sudo chmod +x ./app/console' to make sure ./app/console is executable\n" .
-            "\nAnd then run './app/console manager:install' to install the manager.\n");
+        $oInputOutput->write("\nRun 'sudo chmod +x ./app/console' to make sure the console of the manager is " .
+            "executable\n\nAnd then run './app/console manager:install' to install the manager.\n");
     }
 
     private static function askAndReplace(
