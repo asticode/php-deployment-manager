@@ -71,7 +71,7 @@ class BuildHandler
     public function build(array &$aBuild, array $aCommands)
     {
         // Loop through commands
-        /** @var $oCommand \Asticode\DeploymentManager\Entity\Handler\Command */
+        /** @var $oCommand \Asticode\DeploymentManager\Entity\Build\Command */
         foreach ($aCommands as $iIndex => $oCommand) {
             // Log
             $sLogMessage = sprintf(

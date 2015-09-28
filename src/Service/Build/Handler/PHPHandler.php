@@ -1,7 +1,7 @@
 <?php
 namespace Asticode\DeploymentManager\Service\Build\Handler;
 
-use Asticode\DeploymentManager\Entity\Handler\Command;
+use Asticode\DeploymentManager\Entity\Build\Command;
 use Asticode\DeploymentManager\Enum\CommandDatasource;
 use Asticode\FileManager\Enum\OrderDirection;
 use Asticode\FileManager\Enum\OrderField;

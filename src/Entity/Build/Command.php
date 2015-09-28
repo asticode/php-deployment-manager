@@ -1,5 +1,5 @@
 <?php
-namespace Asticode\DeploymentManager\Entity\Handler;
+namespace Asticode\DeploymentManager\Entity\Build;
 
 class Command
 {
