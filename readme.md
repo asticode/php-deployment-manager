@@ -2,7 +2,7 @@
 
 You must have PHP, GIT and Composer installed on your system
 
-You must create a UTF-8 database and a user with read/write rights on it beforehand
+You must create a UTF-8 database and a user with read/write privileges on it beforehand
 
 # Installation
 
