@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-file-manager.git",
-                "reference": "d511a6ad515d1d5f235beee24ca48662d4658afa"
+                "reference": "bdf01b444496463c3740b33359749724b18367bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-file-manager/zipball/d511a6ad515d1d5f235beee24ca48662d4658afa",
-                "reference": "d511a6ad515d1d5f235beee24ca48662d4658afa",
+                "url": "https://api.github.com/repos/asticode/php-file-manager/zipball/bdf01b444496463c3740b33359749724b18367bb",
+                "reference": "bdf01b444496463c3740b33359749724b18367bb",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "php",
                 "unix"
             ],
-            "time": "2015-09-29 13:16:14"
+            "time": "2015-09-29 19:30:28"
         },
         {
             "name": "asticode/php-toolbox",
@@ -105,16 +105,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-toolbox.git",
-                "reference": "a23fc5caef29d6907cd9b4df478b0efdc83702ba"
+                "reference": "88892f5471aadce5032992280f2fc5b80cbe6f3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/a23fc5caef29d6907cd9b4df478b0efdc83702ba",
-                "reference": "a23fc5caef29d6907cd9b4df478b0efdc83702ba",
+                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/88892f5471aadce5032992280f2fc5b80cbe6f3c",
+                "reference": "88892f5471aadce5032992280f2fc5b80cbe6f3c",
                 "shasum": ""
             },
             "require": {
-                "composer/composer": "1.0.0-alpha10",
                 "php": ">=5.3.0"
             },
             "type": "library",
@@ -144,7 +143,7 @@
                 "shell",
                 "string"
             ],
-            "time": "2015-09-29 13:34:21"
+            "time": "2015-09-29 19:20:56"
         },
         {
             "name": "aura/sql",
