@@ -7,7 +7,7 @@ return [
             'git' => '%BUILD_BIN_GIT%',
             'php' => '%BUILD_BIN_PHP%',
         ],
-        'nb_backups_per_projects' => '%BUILD_NB_BACKUPS_PER_PROJECTS%',
+        'nb_backups_per_project' => %BUILD_nb_backups_per_project%,
     ],
 
     'datasources' => [

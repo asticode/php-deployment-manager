@@ -23,6 +23,7 @@
     "symfony/console": "^2.7",
     "monolog/monolog": "1.*",
     "aura/sql": "~2.4.0",
+    "composer/composer": "1.0.0-alpha10",
     "asticode/php-toolbox": "dev-master",
     "asticode/php-file-manager": "dev-master",
     "asticode/php-data-mapper": "dev-master"

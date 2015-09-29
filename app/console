@@ -9,16 +9,6 @@ require_once __DIR__ . '/../src/bootstrap.php';
 
 // Get commands
 $aCommands = [
-    new Command\Manager\InstallCommand(
-        $oFileManager,
-        $oDbConnectionLocator,
-        $oLogger,
-        $aConfig
-    ),
-    new Command\Manager\CheckCommand(
-        $oLogger,
-        $aConfig
-    ),
     new Command\Test\WebhookCommand(
         $oWebhookHandler,
         $oLogger,

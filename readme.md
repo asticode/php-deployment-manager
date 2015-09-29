@@ -6,17 +6,13 @@ You must create a UTF-8 database and a user with read/write privileges on it bef
 
 # Installation
 
-Import the project with
+Install the project with
 
     $ composer create-project asticode/php-deployment-manager .
     
-Make sure the console is executable with
+And follow the instructions on the screen.
 
-    $ sudo chmod +x ./app/console
-    
-Install the manager with
-
-    $ ./app/console manager:install
+In case of a problem, remove the folder created and re-run the previous command.
     
 You can add a new project anytime with
 

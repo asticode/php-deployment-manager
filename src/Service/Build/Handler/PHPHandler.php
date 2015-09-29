@@ -180,7 +180,7 @@ class PHPHandler extends AbstractHandler
                     }
 
                     // Remove old backups
-                    if ($this->aConfig['nb_backups_per_projects'] > 0) {
+                    if ($this->aConfig['nb_backups_per_project'] > 0) {
                         // Get dirs
                         $aDirs = $this->oFileManager->explore(
                             $sBackupDirPath,
@@ -203,7 +203,7 @@ class PHPHandler extends AbstractHandler
                                     'Deleted directory %s',
                                     $oDirToBeRemoved->getPath()
                                 );
-                            } while (count($aDirs) > $this->aConfig['nb_backups_per_projects']);
+                            } while (count($aDirs) > $this->aConfig['nb_backups_per_project']);
                         }
                     }
 
