@@ -242,11 +242,11 @@ class Install
                 }
 
                 // Output
-                $oEvent->getIO()->write(sprintf("\n%s: OK\n", $sOutput));
+                $oEvent->getIO()->write(sprintf("\n%s: OK", $sOutput));
 
                 // Conclude
                 $oEvent->getIO()->write(
-                    "\nInstallation successful!\n\n\nYou can now add a new project with\n\n" .
+                    "\n\nInstallation successful!\n\n\nYou can now add a new project with\n\n" .
                     "    $ <your path>/app/console project:add\n\nOr remove a project with\n\n" .
                     "    $ <your path>/app/console project:remove\n"
                 );
