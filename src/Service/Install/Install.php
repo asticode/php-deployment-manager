@@ -246,9 +246,9 @@ class Install
 
                 // Conclude
                 $oEvent->getIO()->write(
-                    "\nInstallation successful!\n\nYou can now add a new project with\n\n" .
-                    "    $ ./app/console project:add\n\nOr remove a project with\n\n" .
-                    "    $ ./app/console project:remove\n"
+                    "\nInstallation successful!\n\n\nYou can now add a new project with\n\n" .
+                    "    $ <your path>/app/console project:add\n\nOr remove a project with\n\n" .
+                    "    $ <your path>/app/console project:remove\n"
                 );
             } else {
                 // Output
