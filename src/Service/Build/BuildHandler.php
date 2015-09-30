@@ -78,26 +78,25 @@ class BuildHandler
         /** @var $oStep \Asticode\DeploymentManager\Entity\Build\Step */
         foreach ($aSteps as $iIndex => $oStep) {
             // Log
-            $sLogMessage = sprintf(
+            $this->log($aBuild, sprintf(
                 '%s.%s',
                 ($iIndex + 1),
                 $oStep->getLabel()
-            );
-            $this->buildExecuteLog($aBuild, $sLogMessage);
+            ));
 
             if ($oStep->getDatasource() === StepDatasource::PHP) {
                 // Log
-                $this->buildExecuteLog($aBuild, call_user_func($oStep->getContent()));
+                $this->log($aBuild, call_user_func($oStep->getContent()));
             } else {
                 // Log
-                $this->buildExecuteLog($aBuild, $oStep->getContent());
+                $this->log($aBuild, $oStep->getContent());
 
                 // Execute
                 $aOutput = [];
                 $iExitStatus = ExtendedShell::exec($oStep->getContent(), $aOutput, $oStep->getTimeout(), false);
 
                 // Log
-                $this->buildExecuteLog($aBuild, $aOutput);
+                $this->log($aBuild, $aOutput);
 
                 // Error
                 if ($iExitStatus !== 0) {
@@ -110,7 +109,7 @@ class BuildHandler
         }
     }
 
-    private function buildExecuteLog(array &$aBuild, $aLogMessages)
+    private function log(array &$aBuild, $aLogMessages)
     {
         if (!is_array($aLogMessages)) {
             $aLogMessages = [$aLogMessages];
