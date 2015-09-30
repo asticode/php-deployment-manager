@@ -72,16 +72,16 @@ class ExecuteCommand extends AbstractCommand
                 // Get project
                 $aProject = $this->aConfig['projects'][$aBuild['project']];
 
-                // Get commands
-                $aCommands = $this->oBuildHandler->getCommands($aBuild, $aProject);
+                // Get steps
+                $aSteps = $this->oBuildHandler->getSteps($aBuild, $aProject);
 
                 // Update build
-                $aBuild = $oDeploymentBuildRepository->updateNumberOfCommands($aBuild, count($aCommands));
+                $aBuild = $oDeploymentBuildRepository->updateNumberOfSteps($aBuild, count($aSteps));
                 $oDeploymentBuildHistoryRepository->create($aBuild);
 
                 try {
                     // Build project
-                    $this->oBuildHandler->build($aBuild, $aCommands);
+                    $this->oBuildHandler->build($aBuild, $aSteps);
 
                     // Update build
                     $aBuild = $oDeploymentBuildRepository->updateStateId($aBuild, BuildState::DONE);

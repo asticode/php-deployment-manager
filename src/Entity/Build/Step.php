@@ -1,7 +1,7 @@
 <?php
 namespace Asticode\DeploymentManager\Entity\Build;
 
-class Command
+class Step
 {
     // Attributes
     private $sLabel;

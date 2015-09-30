@@ -2,7 +2,7 @@
 namespace Asticode\DeploymentManager\Service\Build;
 
 use Asticode\DataMapper\DataMapper;
-use Asticode\DeploymentManager\Enum\CommandDatasource;
+use Asticode\DeploymentManager\Enum\StepDatasource;
 use Asticode\FileManager\FileManager;
 use Asticode\Toolbox\ExtendedShell;
 use Asticode\Toolbox\ExtendedString;
@@ -19,8 +19,12 @@ class BuildHandler
     private $aConfig;
 
     // Construct
-    public function __construct(DataMapper $oDataMapper, FileManager $oFileManager, LoggerInterface $oLogger, array $aConfig)
-    {
+    public function __construct(
+        DataMapper $oDataMapper,
+        FileManager $oFileManager,
+        LoggerInterface $oLogger,
+        array $aConfig
+    ) {
         // Initialize
         $this->oDataMapper = $oDataMapper;
         $this->aHandlers = [];
@@ -59,38 +63,38 @@ class BuildHandler
         return $this->aHandlers[$sHandlerName];
     }
 
-    public function getCommands(array $aBuild, array $aProjectConfig)
+    public function getSteps(array $aBuild, array $aProjectConfig)
     {
         // Get handler
         $oHandler = $this->getHandler($aProjectConfig['handler']);
 
-        // Get commands
-        return $oHandler->getCommands($aBuild, $aProjectConfig);
+        // Get steps
+        return $oHandler->getSteps($aBuild, $aProjectConfig);
     }
 
-    public function build(array &$aBuild, array $aCommands)
+    public function build(array &$aBuild, array $aSteps)
     {
-        // Loop through commands
-        /** @var $oCommand \Asticode\DeploymentManager\Entity\Build\Command */
-        foreach ($aCommands as $iIndex => $oCommand) {
+        // Loop through steps
+        /** @var $oStep \Asticode\DeploymentManager\Entity\Build\Step */
+        foreach ($aSteps as $iIndex => $oStep) {
             // Log
             $sLogMessage = sprintf(
                 '%s.%s',
                 ($iIndex + 1),
-                $oCommand->getLabel()
+                $oStep->getLabel()
             );
             $this->buildExecuteLog($aBuild, $sLogMessage);
 
-            if ($oCommand->getDatasource() === CommandDatasource::PHP) {
+            if ($oStep->getDatasource() === StepDatasource::PHP) {
                 // Log
-                $this->buildExecuteLog($aBuild, call_user_func($oCommand->getContent()));
+                $this->buildExecuteLog($aBuild, call_user_func($oStep->getContent()));
             } else {
                 // Log
-                $this->buildExecuteLog($aBuild, $oCommand->getContent());
+                $this->buildExecuteLog($aBuild, $oStep->getContent());
 
                 // Execute
                 $aOutput = [];
-                $iExitStatus = ExtendedShell::exec($oCommand->getContent(), $aOutput, $oCommand->getTimeout(), false);
+                $iExitStatus = ExtendedShell::exec($oStep->getContent(), $aOutput, $oStep->getTimeout(), false);
 
                 // Log
                 $this->buildExecuteLog($aBuild, $aOutput);

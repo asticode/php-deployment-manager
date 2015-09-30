@@ -15,7 +15,7 @@ class BuildHistory extends AbstractRepository
             'commit_node' => $aBuild['commit_node'],
             'commit_author' => $aBuild['commit_author'],
             'commit_message' => $aBuild['commit_message'],
-            'nb_of_commands' => $aBuild['nb_of_commands'],
+            'nb_of_steps' => $aBuild['nb_of_steps'],
             'execute_log' => $aBuild['execute_log'],
         ];
 

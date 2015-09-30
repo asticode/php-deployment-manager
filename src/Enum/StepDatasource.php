@@ -1,7 +1,7 @@
 <?php
 namespace Asticode\DeploymentManager\Enum;
 
-class CommandDatasource
+class StepDatasource
 {
     const PHP = 1;
     const SHELL = 2;

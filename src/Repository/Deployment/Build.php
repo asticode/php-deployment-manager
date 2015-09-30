@@ -16,7 +16,7 @@ class Build extends AbstractRepository
             'commit_node' => $oCommit->getNode(),
             'commit_author' => $oCommit->getAuthor(),
             'commit_message' => $oCommit->getMessage(),
-            'nb_of_commands' => null,
+            'nb_of_steps' => null,
             'execute_log' => [],
         ];
 
@@ -71,7 +71,10 @@ class Build extends AbstractRepository
         ]);
 
         // Delete
-        if (in_array($iBuildStateId, [BuildState::MERGED, BuildState::CANCELLED, BuildState::ERROR, BuildState::DONE])) {
+        if (in_array(
+            $iBuildStateId,
+            [BuildState::MERGED, BuildState::CANCELLED, BuildState::ERROR, BuildState::DONE]
+        )) {
             $this->oMapper->delete([
                 'id' => $aBuild['id'],
             ]);
@@ -88,18 +91,18 @@ class Build extends AbstractRepository
         ], 'created_at ASC');
     }
 
-    public function updateNumberOfCommands(array $aBuild, $iNumberOfCommands)
+    public function updateNumberOfSteps(array $aBuild, $iNumberOfSteps)
     {
         // Update build
-        $aBuild['nb_of_commands'] = $iNumberOfCommands;
+        $aBuild['nb_of_steps'] = $iNumberOfSteps;
         $aBuild['build_state_id'] = BuildState::RUNNING;
 
         // Execute
         $this->oMapper->update([
             'id' => $aBuild['id'],
         ], [
-            'nb_of_commands' => $iNumberOfCommands,
-            'build_state_id' => BuildState::RUNNING,
+            'nb_of_commands' => $aBuild['nb_of_steps'],
+            'build_state_id' => $aBuild['build_state_id'],
         ]);
 
         // Return
