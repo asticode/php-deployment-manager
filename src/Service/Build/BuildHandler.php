@@ -3,6 +3,7 @@ namespace Asticode\DeploymentManager\Service\Build;
 
 use Asticode\DataMapper\DataMapper;
 use Asticode\DeploymentManager\Enum\StepDatasource;
+use Asticode\DeploymentManager\Service\Build\Handler\HandlerInterface;
 use Asticode\FileManager\FileManager;
 use Asticode\Toolbox\ExtendedShell;
 use Asticode\Toolbox\ExtendedString;
@@ -54,11 +55,22 @@ class BuildHandler
                 ));
             }
 
-            // Create repository
-            $this->aHandlers[$sHandlerName] = new $sClassName(
+            // Create handler
+            $oHandler = new $sClassName(
                 $this->oFileManager,
                 $this->aConfig
             );
+
+            // Handler implements the interface
+            if (!$oHandler instanceof HandlerInterface) {
+                throw new RuntimeException(sprintf(
+                    'Class name %s doesn\'t implement the HandlerInterface',
+                    $sClassName
+                ));
+            }
+
+            // Add handler
+            $this->aHandlers[$sHandlerName] = $oHandler;
         }
         return $this->aHandlers[$sHandlerName];
     }
