@@ -1,8 +1,6 @@
 # Prerequisites
 
-You must have PHP, GIT and Composer installed on your system
-
-You must create a UTF-8 database and a user with read/write privileges on it beforehand
+You must create a UTF-8 database and a user with read/write privileges beforehand
 
 # Installation
 
@@ -32,12 +30,45 @@ And follow the instructions on the screen
     $
     $ Installation successful!
 
-In case of a problem, remove the folder created and re-run the previous command.
+In case of a problem, remove the folder created by composer and re-run the command.
+
+# How it works
+
+The deployment manager builds all projects the same way:
+
+    1. Back up the current project content
+    2. Create a temp directory
+    3. Fetch the last version of the project in the temp directory
+    4. Execute the specific steps of the build handler associated with the project
+    5. Move the temp dir to the real project dir
     
-You can add a new project anytime with
+Therefore, pretty much everything lies in the build handler you choose since it will determine the specific steps taken 
+once the last version of the project has been fetched.
+
+Only one out-of-the-box build handler is delivered with the project: the PHP Handler. Its specific steps are:
+
+    1. Copy the dist config files
+    2. Replace the dist parameters
+    
+# Add a custom build handler
+
+But what if I want to execute different steps you ask ?
+ 
+Well nothing is easier! All you have to do is create your own build handler implementing the HandlerInterface in the 
+/src/Service/Build/Handler/Custom folder and more specifically implement a *getSpecificSteps* method that will
+return the steps *you* want to execute during the deployment.
+
+Once it's done, simply associate it with your project by giving `Custom\\MyAwesomeHandler` to the attribute `handler` 
+of your project.
+
+# Create a new project
+    
+Add a new project with
 
     $ <your path>/app/console project:add
+
+# Remove a project
     
-Or remove a project anytime with
+Remove a project with
 
     $ <your path>/app/console project:remove -n <project name> -b <branch name>

@@ -104,6 +104,9 @@ abstract class AbstractHandler implements HandlerInterface
         $sBranchName,
         DateTime $oNow
     ) {
+        // Backup project
+        $aSteps[] = $this->stepBackupSourceDir($sBackupDirPath, $sSourceDirPath, $oNow);
+
         // Create temp directory
         $aSteps[] = $this->stepCreateTempDir($sTempDirPath);
 
@@ -115,9 +118,6 @@ abstract class AbstractHandler implements HandlerInterface
 
         // Git reset
         $aSteps[] = $this->stepGitReset($sGitDirPath, $sTempDirPath);
-
-        // Backup project
-        $aSteps[] = $this->stepBackupSourceDir($sBackupDirPath, $sSourceDirPath, $oNow);
     }
 
     protected function stepCreateTempDir($sTempDirPath)
