@@ -3,8 +3,11 @@ namespace Asticode\DeploymentManager\Command;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractCommand extends Command
 {
@@ -72,5 +75,51 @@ abstract class AbstractCommand extends Command
             // Update terminate
             $bTerminate = $oInput->getOption('timeout') < (microtime(true) - $iStartTime);
         } while (!$bTerminate);
+    }
+
+    // Ask
+    protected function ask(
+        QuestionHelper $oQuestionHelper,
+        InputInterface $oInput,
+        OutputInterface $oOutput,
+        $sLabel,
+        $sDefault = null,
+        $bMandatory = true,
+        $aChoices = []
+    ) {
+        // Update label
+        $sLabel = sprintf(
+            '%s%s: ',
+            $sLabel,
+            !is_null($sDefault) ? sprintf(' [%s]', $sDefault) : ''
+        );
+
+        // Create question
+        if ($aChoices === []) {
+            $oQuestion = new Question($sLabel, $sDefault);
+        } else {
+            $oQuestion = new ChoiceQuestion($sLabel, $aChoices, $sDefault);
+        }
+
+        // Ask
+        do {
+            // Initialize
+            $bTerminate = true;
+
+            // Ask
+            $sValue = $oQuestionHelper->ask($oInput, $oOutput, $oQuestion);
+
+            // Mandatory
+            if ($bMandatory and empty($sValue)) {
+                // Output
+                $oOutput->writeln('Value can\'t be blank');
+
+                // Update terminate
+                $bTerminate = false;
+            }
+        } while (!$bTerminate);
+
+        // Return
+        return $sValue;
     }
 }
